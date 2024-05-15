@@ -70,17 +70,4 @@ const Main = () => {
   );
 };
 
-const Home = () => {
-  return (
-    <>
-      <Header />
-      <SuddenLogo />
-      <Info />
-      <WineSlider />
-      <Wheretobuy />
-      <Presentation />
-    </>
-  );
-};
-
 export default Main;
