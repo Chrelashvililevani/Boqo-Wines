@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import UseScrollEffect from './UseScrollEffect';
 import { firestore } from './firebase'; // Import Firestore instance from firebase.js
-import { collection, getDocs, query, orderBy, limit } from '@firebase/firestore';
+import { collection, getDocs, onSnapshot, query, orderBy, limit } from '@firebase/firestore';
 import { Link } from 'react-router-dom'; // Import Link component for navigation
 
 
@@ -108,6 +108,16 @@ const Info = () => {
     fetchNews();
 
     // Set up real-time listener for changes to the "News" collection
+    const unsubscribe = onSnapshot(query(collection(firestore, 'News'), orderBy('timestamp', 'desc'), limit(5)), (snapshot) => {
+      const updatedNewsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNewsList(updatedNewsList);
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   return (

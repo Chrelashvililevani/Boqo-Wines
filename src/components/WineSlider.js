@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import { firestore } from './firebase';
-import { collection, getDocs, query, orderBy, limit } from '@firebase/firestore';
+import { collection, getDocs, onSnapshot, query, orderBy, limit } from '@firebase/firestore';
 import AddToCart from './AddToCart'; // Import AddToCart component
 import { Link } from 'react-router-dom';
 
@@ -33,8 +33,8 @@ function WineSlider() {
         return () => {
             window.removeEventListener('resize', initializeWinesSlider);
         };
-    }, [currentWineIndex, winesList, showMessage]); // Added showMessage to the dependencies array
-        
+    }, [currentWineIndex, winesList]); // Added winesList to the dependencies array
+    
     const goToWine = (index) => {
         if (wineContainersRef.current.length > 0) {
             const offset = -index * wineWidth;
@@ -67,6 +67,12 @@ function WineSlider() {
 
         fetchWines();
 
+        const unsubscribe = onSnapshot(query(collection(firestore, 'Wines'), orderBy('timestamp', 'desc'), limit(5)), (snapshot) => {
+            const updatedWinesList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            setWinesList(updatedWinesList);
+        });
+
+        return () => unsubscribe();
     }, []);
 
     return (

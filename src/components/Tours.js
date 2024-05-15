@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import { firestore } from './firebase';
-import { collection, getDocs, query, orderBy, limit } from '@firebase/firestore';
+import { collection, getDocs, onSnapshot, query, orderBy, limit } from '@firebase/firestore';
 import './style.css';
 
 const Tours = () => {
@@ -27,6 +27,15 @@ const Tours = () => {
 
     fetchNews();
 
+    const unsubscribe = onSnapshot(query(collection(firestore, 'News'), orderBy('timestamp', 'desc'), limit(5)), (snapshot) => {
+      const updatedNewsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNewsList(updatedNewsList);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   return (
