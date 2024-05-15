@@ -47,7 +47,6 @@ const Navigation = ({ updateZIndexes }) => {
                 const cartItemsSnapshot = await getDocs(query(cartItemsCollection, where('userId', '==', userId), where('status', '==', 'checking')));
                 const itemCount = cartItemsSnapshot.docs.length; // Use length property to count items
                 setCartItemCount(itemCount);
-                console.log(itemCount);
             } else {
                 setCartItemCount(0);
             }
@@ -56,7 +55,6 @@ const Navigation = ({ updateZIndexes }) => {
         }
     };
     
-    console.log('User:', user); // Log the user variable
     
     
     fetchCartItems();
@@ -70,7 +68,6 @@ const Navigation = ({ updateZIndexes }) => {
 
 useEffect(() => {
   const unsubscribe = auth.onAuthStateChanged(user => {
-      console.log('Auth state changed. User:', user); // Log the user variable
       setUser(user); // Update user state
   });
 
