@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
-import { collection, getDocs, onSnapshot, query, where } from '@firebase/firestore';
+import { collection, getDocs, query, where } from '@firebase/firestore';
 import { firestore, auth } from './firebase';
 import Basket from './Basket'; // Import the Basket component
 import RegisterUser from './RegisterUser'; // Import the RegisterUser component
@@ -61,11 +61,6 @@ const Navigation = ({ updateZIndexes }) => {
     
     fetchCartItems();
 
-    const unsubscribe = onSnapshot(collection(firestore, 'wines-sold'), () => {
-        fetchCartItems();
-    });
-
-    return () => unsubscribe();
 }, [user]);
 
 useEffect(() => {
