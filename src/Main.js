@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import AboutUs from './components/AboutUs';
 import Tours from './components/Tours';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -20,6 +19,7 @@ import './components/style.css';
 import CheckoutPage from './components/CheckoutPage';
 import Layout from './components/layout';
 import BoughtWinesPage from './components/BoughtWinesPage';
+import Home from './components/Home'; // Added import statement for Home component
 
 
 
@@ -49,7 +49,6 @@ const Main = () => {
             <Layout />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/" element={<AboutUs />} />
               <Route path="/WinesPage" element={<WinesPage />} />
               <Route path="/tours" element={<Tours />} />
               <Route path="/contact" element={<Contact />} />

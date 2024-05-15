@@ -33,8 +33,8 @@ function WineSlider() {
         return () => {
             window.removeEventListener('resize', initializeWinesSlider);
         };
-    }, [currentWineIndex, winesList]); // Added winesList to the dependencies array
-    
+    }, [currentWineIndex, winesList, showMessage]); // Added showMessage to the dependencies array
+        
     const goToWine = (index) => {
         if (wineContainersRef.current.length > 0) {
             const offset = -index * wineWidth;

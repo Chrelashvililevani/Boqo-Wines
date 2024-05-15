@@ -20,10 +20,10 @@ function Wheretobuy() {
         const interval = setInterval(() => {
             handleSlide('next'); // Automatically slide to the next one
         }, 3000); // Change slide every 3 seconds (adjust as needed)
-
+    
         return () => clearInterval(interval); // Cleanup the interval on component unmount
-    }, []);
-
+    }, [activeBox]); // Added activeBox to the dependencies array
+    
 
     return (
         <div className='where-to-buy-content'>
