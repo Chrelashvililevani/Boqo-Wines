@@ -6,12 +6,11 @@ body {
     font-weight: 400;
     font-style: normal;
     font-variation-settings:
-      "wdth" 100;
+      "wdth" 100%;
         margin: 0px;
     padding: 0px;
     background-color: #ffffff;
-    overflow-x: hidden;
-    width: 100vw;
+    width: 100%;
 }
 .header {
     display: flex;
@@ -22,7 +21,7 @@ body {
     background-size: cover;
     background-position: left;
     margin-top: 0px;
-    width: 100vw;
+    width: 100%;
     margin: 0px;
     padding: 0px;
     margin-bottom: 10px;
@@ -57,7 +56,7 @@ body {
     font-weight: 100;
     position: absolute;
     background-color: #00000050;
-    width: 100vw;
+    width: 100%;
     height: 80px;
     position: fixed;
     flex-direction: row;
@@ -128,7 +127,7 @@ footer {
     width: 100%;
     margin: 0;
     margin-top: 50px;
-    width: 100vw;
+    width: 100%;
     margin: 0px;
     padding: 0px;
     height: 300px;
@@ -195,7 +194,7 @@ footer {
     flex-direction: row;
     justify-content: center;
     gap: 100px;
-    width: 100vw;
+    width: 100%;
     margin: 0 auto; /* Center horizontally */
     margin-bottom: 50px;
     background-color: #fff;
@@ -249,7 +248,7 @@ footer {
         flex-direction: row;
         justify-content: center;
         gap: 100px;
-        width: calc(100vw - 0px); /* Subtract twice the gap value from 100vw */
+        width: 100vw; /* Subtract twice the gap value from 100vw */
         margin-bottom: 50px;
         border-bottom-left-radius: 0px;
         padding: 0px;
@@ -267,7 +266,7 @@ footer {
         justify-content: left;
         align-self: center;
         justify-self: center;
-        width: calc(100vw - 0px); /* Subtract twice the gap value from 100vw */
+        width: 100%; /* Subtract twice the gap value from 100vw */
         gap: 50px;
         padding-left: 0;
         background-color: black;
@@ -311,7 +310,7 @@ footer {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100vw;
+    width: 98.93vw;
     background-color: white;
     height: 400px;
     position: relative;
@@ -498,7 +497,7 @@ footer {
   }
   .menu-botton-container {
     display: flex;
-    width: 100vw;
+    width: 100%;
     height: 50px;
     background-color: #00000050;
     position: fixed;
@@ -514,7 +513,7 @@ footer {
     background-image: url(./images/aboutus.jpg);
     background-position: center;
     background-size: cover;
-    width: 100vw;
+    width: 100%;
     height: 300px;
 }
 .about-us-text-content {
@@ -538,7 +537,7 @@ footer {
     background-size: cover;
   }
 .georgian-wine-contact{
-    width: 100vw;
+    width: 100%;
     height: 300px;
 }
 .georgian-wine-text-content {
@@ -574,7 +573,7 @@ footer {
         background-image: url(./images/aboutus.jpg);
         background-position: center;
         background-size: cover;
-        width: 100vw;
+        width: 100%;
         height: 300px;
     }
     .about-us-text-content {
@@ -603,7 +602,7 @@ footer {
         background-image: url(./images/contact-header.jpg);
         background-position: center;
         background-size: cover;
-        width: 100vw;
+        width: 100%;
         height: 300px;
     }
     .contact-text-content {
@@ -654,11 +653,11 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw; /* Set width to 100% of viewport width */
+    width: 100%; /* Set width to 100% of viewport width */
     height: 100vh; /* Set height to 100% of viewport height */
   }
   .enter-zero {
-    width: 100vw;
+    width: 100%;
     height: 35vh;
   }
   .entrance {
@@ -980,7 +979,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 100vw;
+    width: 100%;
     align-self: center;
     justify-self: center;
     align-content: center;
@@ -992,7 +991,7 @@ footer {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    width: 100vw;
+    width: 100%;
     justify-self: center;
     align-self: center;
   }
@@ -1003,7 +1002,7 @@ footer {
     justify-content: center;
     gap: 4.5vw;
     flex-wrap: wrap;
-    width: 100vw;
+    width: 100%;
     padding-top: 50px;
     padding-bottom: 50px;
   }
@@ -1053,12 +1052,12 @@ footer {
 }
 .view-news-body {
   display: flex;
-  width: 100vw;
+  width: 100%;
   flex-direction: column;
   background-color: #ffffff;
 }
 .view-news-header {
-  width: 100vw;
+  width: 100%;
   height: 300px;
   background-image: url(./images/tours.jpg);
   background-position: center;
@@ -1109,7 +1108,7 @@ footer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -1508,7 +1507,7 @@ footer {
 }
 .wines-page {
   display: flex;
-  max-width: 100vw;
+  max-width: 100%;
   flex-direction: column;
   background-color: rgb(255, 255, 255);
 }
@@ -1549,7 +1548,7 @@ footer {
 
 .wines-header {
   display: flex;
-  width: 100vw;
+  width: 100%;
   height: 200px;
   background-color: black;
   background-image: url(./images/wines-image.jpg);
@@ -1647,7 +1646,7 @@ footer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: white;
   text-align: center; /* Center the content horizontally */
