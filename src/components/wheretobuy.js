@@ -2,18 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
+const slides = [
+    {
+        imageUrl: '/images/8000vintages.jpg',
+        text: '8000 მოსავალი, მისამართი: ს. წინანდალის ქუჩა ნომერი 26, თბილისი.'
+    },
+    {
+        imageUrl: '/images/wine-tower.jpg',
+        text: 'ღვინის კოშკი, მისამართი: შარდენის ქუჩა ნომერი 1, თბილისი.'
+    },
+    {
+        imageUrl: '/images/chachatour.jpg',
+        text: 'ჭაჭატური, მისამართი: მეტეხის აღმართი ნომერი 3, თბილისი.'
+    },
+    {
+        imageUrl: '/images/meidan.jpg',
+        text: 'მეიდან ბაზარი, მისამართი: გორგასალის ქუჩა ნომერი 1, თბილისი.'
+    }
+];
 
 function Wheretobuy() {
-    const [activeBox, setActiveBox] = useState(1);
+    const [activeSlide, setActiveSlide] = useState(0);
 
     const handleSlide = (direction) => {
-        console.log('Direction:', direction);
         if (direction === 'next') {
-            setActiveBox((prev) => (prev === 4 ? 1 : prev + 1));
+            setActiveSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
         } else {
-            setActiveBox((prev) => (prev === 1 ? 4 : prev - 1));
+            setActiveSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
         }
-        console.log('Active Box:', activeBox);
     };
 
     useEffect(() => {
@@ -22,39 +38,19 @@ function Wheretobuy() {
         }, 3000); // Change slide every 3 seconds (adjust as needed)
     
         return () => clearInterval(interval); // Cleanup the interval on component unmount
-    }, [activeBox]); // Added activeBox to the dependencies array
-    
+    }, [activeSlide]);
 
     return (
         <div className='where-to-buy-content'>
-            <h2 className='buy-title'>სად შეძლებთ შეიძინოთ ჩვენი ღვინო?</h2>
             <div className='where-to-buy'>
-                <div className='div-1'>
-                    <div className={`buy-box buy-box-1 ${activeBox === 1 ? 'active' : ''}`}>
-                        <p className='byu-box-1-text'>
-                            8000 მოსავალი, მისამართი: ს. წინანდალის ქუჩა ნომერი 26, თბილისი.
-                        </p>
-                    </div>
-                    <div className={`buy-box buy-box-2 ${activeBox === 2 ? 'active' : ''}`}>
-                        <p className='byu-box-1-text'>
-                            ღვინის კოშკი, მისამართი: შარდენის ქუჩა ნომერი 1, თბილისი.
-                        </p>
-                    </div>
-                    <div className={`buy-box buy-box-3 ${activeBox === 3 ? 'active' : ''}`}>
-                        <p className='byu-box-1-text'>
-                            ჭაჭატური, მისამართი: მეტეხის აღმართი ნომერი 3, თბილისი.
-                        </p>
-                    </div>
-                    <div className={`buy-box buy-box-4 ${activeBox === 4 ? 'active' : ''}`}>
-                        <p className='byu-box-1-text'>
-                            მეიდან ბაზარი, მისამართი: გორგასალის ქუჩა ნომერი 1, თბილისი.
-                        </p>
-                    </div>
+                <div style={{ position: 'relative', width: '100%', height: '40vw', minHeight: '300px' }}>
+                    {slides.map((slide, index) => (
+                        <div key={index} className={`buy-box ${activeSlide === index ? 'active' : ''}`} style={{ background: `url('${slide.imageUrl}',),`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%' }}>
+                            <p className='byu-box-1-text'>შეიძინეთ ღვინო</p>
+                            <p className='byu-box-1-text'>{slide.text}</p>
+                        </div>
+                    ))}
                 </div>
-            </div>
-            <div className='navigation-buttons'>
-                <button onClick={() => handleSlide('prev')}><FontAwesomeIcon icon={faChevronLeft} size='2xl'/></button>
-                <button onClick={() => handleSlide('next')}><FontAwesomeIcon icon={faChevronRight} size='2xl' /></button>
             </div>
         </div>
     );

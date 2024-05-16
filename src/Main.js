@@ -14,6 +14,7 @@ import CheckoutPage from './components/CheckoutPage';
 import Layout from './components/layout';
 import BoughtWinesPage from './components/BoughtWinesPage';
 import Home from './components/Home'; // Added import statement for Home component
+import FindYourWine from './components/WineSelector'; // Added import statement for Home component
 
 
 
@@ -54,6 +55,7 @@ const Main = () => {
               <Route path="/Wines/:wineId" element={<WineDetailPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/my-wines" element={<BoughtWinesPage />} />
+              <Route path="/find-your-wine" element={<FindYourWine />} />
             </Routes>
             <ScrollToTopButton />
             <Footer />

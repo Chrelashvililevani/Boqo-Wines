@@ -109,7 +109,7 @@ useEffect(() => {
     <>
       {isMobile ? (
         <>
-          <div className="menu-botton-container" style={{ backgroundColor: isScrolled ? 'black' : '' }}>
+          <div className="menu-botton-container" >
             <div className='nav-left'>
               <div className="cart-icon-container" onClick={toggleBasket} style={{ cursor: 'pointer' }}>
                 <div className='cart-count-small'>{cartItemCount > 0 && <div className="cart-item-count">{cartItemCount}</div>}</div>
@@ -148,7 +148,7 @@ useEffect(() => {
           {isBasketOpen && <Basket isBasketOpen={isBasketOpen} />}
         </>
       ) : (
-        <nav id="fixed-nav" style={{ backgroundColor: isScrolled ? 'black' : '' }}>
+        <nav id="fixed-nav">
           <div className='nav-left'>
             <div className="cart-icon-container" onClick={toggleBasket} style={{ cursor: 'pointer' }}>
               <div className='cart-count'>{cartItemCount > 0 && <div className="cart-item-count">{cartItemCount}</div>}</div>

@@ -9,34 +9,27 @@ body {
       "wdth" 100%;
         margin: 0px;
     padding: 0px;
-    background-color: #ffffff;
+    background-color: #e6e6e6;
     width: 100%;
 }
 .header {
     display: flex;
     min-height: 300px;
-    height: 30vw;
+    height: 74vh;
     flex-direction: row;
     background-image: url(./main.jpg);
     background-size: cover;
-    background-position: left;
+    background-position: center;
     margin-top: 0px;
     width: 100%;
     margin: 0px;
     padding: 0px;
     margin-bottom: 10px;
 }
-
-.angled-box {
-    flex: 1;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #f0f0f0; /* Color for the angled part */
-    clip-path: polygon(0 0, 100% 0, 100% 400%);
-    background-image: url(./mainn.jpg);
-    background-size: cover;
-    background-position: center;
+@media screen and (max-width: 720px) {
+  .header {
+    height: 60vh;
+  }
 }
 .infoimg {
     height: 20vw;
@@ -52,12 +45,12 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 100;
     position: absolute;
-    background-color: #00000050;
+    background-color: rgba(70, 70, 70, 0.715);
     width: 100%;
-    height: 80px;
+    height: 100px;
     position: fixed;
     flex-direction: row;
     justify-content: space-between;
@@ -65,7 +58,6 @@ body {
 }
 .nav-right {
     display: flex;
-    background-color: rgb(41, 41, 41);
     width: 20%;
     height: 100%;
     align-items: center;
@@ -75,7 +67,6 @@ body {
 @media screen and (max-width: 600px) {
     .nav-right {
         display: flex;
-        background-color: rgb(41, 41, 41);
         width: 20%;
         height: 100%;
         align-items: center;
@@ -88,7 +79,6 @@ body {
     display: flex;
     width: 15%;
     height: 100%;
-    background-color: rgb(41, 41, 41);
     justify-content: center;
     align-items: center;
     color: white;
@@ -154,9 +144,10 @@ footer {
   color: #b1b1b1;
 }
 .register-button {
-  font-weight: 700;
+  font-weight: 900;
   color: #b1b1b1;
-  font-size: clamp(8px, 2vw, 16px); /* Adjust the values as needed */
+  font-size: clamp(12px, 2vw, 16px); /* Adjust the values as needed */
+  padding-right: 35px;
 }
 .half {
     transition: 0.3s;
@@ -315,6 +306,8 @@ footer {
     height: 400px;
     position: relative;
     overflow-x: hidden;
+    border-bottom: 1px solid rgb(225, 225, 225);
+    border-top: 1px solid rgb(225, 225, 225);
 }
 .wines-container {
     display: flex;
@@ -498,12 +491,17 @@ footer {
   .menu-botton-container {
     display: flex;
     width: 100%;
-    height: 50px;
-    background-color: #00000050;
+    height: 100px;
+    background-color: rgba(70, 70, 70, 0.715);
     position: fixed;
     align-items: center;
     justify-content: space-between;
     z-index: 100;
+  }
+  @media screen and (max-width: 600px) {
+    .menu-botton-container {
+      height: 70px;
+    }
   }
   .about-us-content {
     display: flex;
@@ -685,88 +683,32 @@ footer {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    height: auto;
-    position: relative;
+    width: 100%;
   }
-
-
   .buy-box {
+    display: flex;
     width: 100%;
     height: 100%;
-    position: absolute;
     transition: transform 0.5s ease;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 .buy-box.active {
   transform: translateX(0); /* Move the active slide to the center */
   z-index: 1; /* Ensure the active slide is on top of other slides */
 }
-  .buy-box-1 {
-    display: flex;
-    width: 40vw;
-    min-width: 100px;
-    height: 300px;
-    background-color: black;
-    border-radius: 20px;
-    padding: 20px;
-    background-image: url(./images/8000vintages.jpg);
-    background-position: center;
-    background-size: cover;
-    font-size: clamp(12px, 1vw, 100px);
-    justify-content: center;
-  }
-  .buy-box-2 {
-    display: flex;
-    width: 40vw;
-    min-width: 100px;
-    height: 300px;
-    background-color: black;
-    border-radius: 20px;
-    padding: 20px;
-    background-image: url(./images/wine-tower.jpg);
-    background-position: center;
-    background-size: cover;
-    font-size: clamp(12px, 1vw, 100px);
-    justify-content: center;
-  }
-  .buy-box-3 {
-    display: flex;
-    width: 40vw;
-    min-width: 100px;
-    height: 300px;
-    background-color: black;
-    border-radius: 20px;
-    padding: 20px;
-    background-image: url(./images/chachatour.jpg);
-    background-position: center;
-    background-size: cover;
-    font-size: clamp(12px, 1vw, 100px);
-    justify-content: center;
-  }
-  .buy-box-4 {
-    display: flex;
-    width: 40vw;
-    min-width: 100px;
-    height: 300px;
-    background-color: black;
-    border-radius: 20px;
-    padding: 20px;
-    background-image: url(./images/meidan.jpg);
-    background-position: center;
-    background-size: cover;
-    font-size: clamp(12px, 1vw, 100px);
-    justify-content: center;
-  }
   .where-to-buy {
     display: flex;
     gap: 100px;
     justify-self: center;
     align-items: center;
     justify-content: center;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    width: 80vw;
+    width: 100%;
   }
   .where-to-buy button {
     z-index: 1;
@@ -776,19 +718,9 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 35vw;
+    min-height: 300px;
   }
-  .navigation-buttons {
-    position: absolute;
-    top: 60%;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    padding: 0 20px; /* Add some padding to the buttons */
-    color: black;
-    z-index: 1;
-}
 
 .navigation-buttons button {
     background-color: transparent;
@@ -804,8 +736,11 @@ footer {
 }
 
   .buy-title {
-    padding-bottom: 80px;
+    padding-bottom: 20px;
     font-size: clamp(16px, 2vw, 100px);
+    color: rgb(0, 0, 0);
+    width: 100%;
+    text-align: center;
   }
   @media screen and (max-width: 350px) {
     .buy-title {
@@ -867,7 +802,7 @@ footer {
         justify-content: center;
         border-left: none;
         border-right: none;
-        width: 80vw;
+        width: 100%;
         justify-self: center;
       }
       .navigation-buttons button {
@@ -884,42 +819,6 @@ footer {
         z-index: 1;
       }
     
-      .buy-box-1 {
-        display: flex;
-        width: 80%;
-        height: 300px;
-        background-color: black;
-        border-radius: 0px;
-        padding: 20px;
-        background-image: url(./images/8000vintages.jpg);
-        background-position: center;
-        background-size: cover;
-        font-size: clamp(12px, 1vw, 100px);
-      }
-      .buy-box-2 {
-        display: flex;
-        width: 80%;
-        height: 300px;
-        background-color: black;
-        border-radius: 0px;
-        padding: 20px;
-      }
-      .buy-box-3 {
-        display: flex;
-        width: 80%;
-        height: 300px;
-        background-color: black;
-        border-radius: 0px;
-        padding: 20px;
-      }
-      .buy-box-4 {
-        display: flex;
-        width: 80%;
-        height: 300px;
-        background-color: black;
-        border-radius: 0px;
-        padding: 20px;
-      }
       .byu-box-1-text {
         color: white;
         background-color: #00000095;
@@ -929,19 +828,8 @@ footer {
       .buy-title {
         padding-bottom: 0px;
         font-size: clamp(16px, 2vw, 100px);
-      }
-      .navigation-buttons {
-        position: absolute;
-        top: 55%;
-        transform: translateY(-50%);
-        display: flex;
-        justify-content: space-between;
-        width: 80%;
-        padding: 0 20px; /* Add some padding to the buttons */
-        color: black;
-        z-index: 1;
+      }  
     }
-  }
   .scroll-to-top {
     position: fixed;
     bottom: 20px;
@@ -967,12 +855,16 @@ footer {
     justify-content: space-between;
   }
   @media screen and (min-width: 600px) {
-
   .byu-box-1-text {
+    display: flex;
     color: white;
     background-color: #00000095;
     padding: 10px;
-    border-radius: 10px;
+    font-weight: 900;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    height: 50px;
   }
 }
   .news-body {
@@ -1867,4 +1759,15 @@ footer {
 }
 .my-wines-link-m {
   color: rgb(131, 52, 52);
+}
+.find-your-wine {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+  background-color: #7e4848;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
