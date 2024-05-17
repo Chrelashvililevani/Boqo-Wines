@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const slides = [
     {
@@ -8,11 +6,11 @@ const slides = [
         text: '8000 მოსავალი, მისამართი: ს. წინანდალის ქუჩა ნომერი 26, თბილისი.'
     },
     {
-        imageUrl: '/images/wine-tower.jpg',
+        imageUrl: '/images/meidan.jpg',
         text: 'ღვინის კოშკი, მისამართი: შარდენის ქუჩა ნომერი 1, თბილისი.'
     },
     {
-        imageUrl: '/images/chachatour.jpg',
+        imageUrl: '/images/8000vintages.jpg',
         text: 'ჭაჭატური, მისამართი: მეტეხის აღმართი ნომერი 3, თბილისი.'
     },
     {
@@ -45,7 +43,7 @@ function Wheretobuy() {
             <div className='where-to-buy'>
                 <div style={{ position: 'relative', width: '100%', height: '40vw', minHeight: '300px' }}>
                     {slides.map((slide, index) => (
-                        <div key={index} className={`buy-box ${activeSlide === index ? 'active' : ''}`} style={{ background: `url('${slide.imageUrl}',),`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%' }}>
+                        <div key={index} className={`buy-box ${activeSlide === index ? 'active' : ''}`} style={{ background: `url('${slide.imageUrl}')`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', backgroundRepeat: 'no-repeat' }}>
                             <p className='byu-box-1-text'>შეიძინეთ ღვინო</p>
                             <p className='byu-box-1-text'>{slide.text}</p>
                         </div>

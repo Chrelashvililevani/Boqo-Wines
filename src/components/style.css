@@ -63,6 +63,7 @@ body {
     align-items: center;
     justify-content: center;
     color: white;
+    gap: 10px;
 }
 @media screen and (max-width: 600px) {
     .nav-right {
@@ -134,10 +135,19 @@ footer {
 
 .menu {
     display: flex;
-    background-color: #000;
+    background-color: #38383890;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
 }
+
 .menu li {
   font-size: clamp(16px, 4vw, 24px); /* Adjust the values as needed */
+  font-weight: 900;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  width: 60vw;
 }
 .menu-main {
   font-weight: 700;
@@ -147,7 +157,6 @@ footer {
   font-weight: 900;
   color: #b1b1b1;
   font-size: clamp(12px, 2vw, 16px); /* Adjust the values as needed */
-  padding-right: 35px;
 }
 .half {
     transition: 0.3s;
@@ -302,13 +311,14 @@ footer {
     flex-direction: row;
     align-items: center;
     width: 98.93vw;
-    background-color: white;
+    background-color: #ffffff;
     height: 400px;
     position: relative;
     overflow-x: hidden;
     border-bottom: 1px solid rgb(225, 225, 225);
     border-top: 1px solid rgb(225, 225, 225);
 }
+
 .wines-container {
     display: flex;
     flex-direction: row;
@@ -445,6 +455,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999999;
   }
   
   .menu {
@@ -684,13 +695,13 @@ footer {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-bottom: 20px;
   }
   .buy-box {
     display: flex;
     width: 100%;
     height: 100%;
     transition: transform 0.5s ease;
-    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
@@ -843,6 +854,7 @@ footer {
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 999;
   }
   
   .scroll-to-top.visible {
@@ -1167,7 +1179,7 @@ footer {
   margin-top: 10px;
 }
 .registerUser-content {
-  background-color: white;
+  background-color: #e6e6e6;
   position: fixed;
   top: 0;
   right: 0;
@@ -1232,7 +1244,7 @@ footer {
   margin: 50px auto; /* Add margin to center the form vertically */
   height: 190px;
   color: black;
-  padding-bottom: 100px;
+  padding-bottom: 120px;
 }
 .user-info {
   background-color: #f5f5f5;
@@ -1242,6 +1254,7 @@ footer {
   max-width: 400px;
   margin: 50px auto; /* Add margin to center the form vertically */
   color: black;
+  font-size: 14px;
 }
 @media (max-width: 500px) {
   .registration {
@@ -1401,7 +1414,7 @@ footer {
   display: flex;
   max-width: 100%;
   flex-direction: column;
-  background-color: rgb(255, 255, 255);
+  background-color: #e6e6e6;
 }
 
 .wines-list {
@@ -1768,6 +1781,97 @@ footer {
   font-size: 18px;
   font-weight: 900;
   background-color: #7e4848;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.bought-wines-list {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.bought-row {
+  padding: 20px;
+  background-color: white;
+  width: 200px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+.bought-row:hover {
+  transform: translateY(-5px);
+}
+.find-wine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.find-wine h1 {
+  font-size: 2.5em;
+  color: #6b3e26;
+  margin-bottom: 20px;
+}
+
+.find-wine form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.find-wine label {
+  display: block;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #6b3e26;
+}
+
+.find-wine select, .find-wine input[type="number"], .find-wine button {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
+.find-wine select {
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="#333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+  background-color: #fff;
+  background-size: 12px;
+}
+
+.find-wine button {
+  background-color: #6b3e26;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.find-wine button:hover {
+  background-color: #8e5535;
+}
+
+.find-wine h2 {
+  font-size: 1.5em;
+  color: #6b3e26;
+  margin-bottom: 10px;
+}
+
+.find-wine p {
+  font-size: 1.2em;
+}
+
+.find-wine button[type="reset"] {
+  background-color: #f44336;
+}
+
+.find-wine button[type="reset"]:hover {
+  background-color: #d32f2f;
 }

@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, onSnapshot, query, where } from '@firebase/firestore';
 import { firestore, auth } from './firebase';
 import Basket from './Basket'; // Import the Basket component
 import RegisterUser from './RegisterUser'; // Import the RegisterUser component
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+
 
 const Navigation = ({ updateZIndexes }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -123,10 +126,14 @@ useEffect(() => {
             </button>
             <div className='nav-right'>
               {user ? (
-                <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}>მომხმარებელი</span>
+                <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faUser} size='xl'/>
+                </span>
               ) : (
-                <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}>ავტორიზაცია</span>
+                <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faUser} size='xl'/>
+                </span>
               )}
+            <FontAwesomeIcon icon={faFacebook} size='2xl'/>
+            <FontAwesomeIcon icon={faInstagram} size='2xl'/>
             </div>
           </div>
           {isMenuOpen && (
@@ -166,10 +173,12 @@ useEffect(() => {
             {/* Render RegisterUser component if isRegisterOpen is true */}
             {isRegisterOpen && <RegisterUser onClose={toggleRegister} />}
             {user ? (
-              <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}>მომხმარებელი</span>
+              <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faUser} size='xl'/></span>
             ) : (
-              <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}>ავტორიზაცია</span>
+              <span className="register-button" onClick={toggleRegister} style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faUser} size='xl'/></span>
             )}
+          <FontAwesomeIcon icon={faFacebook} size='xl'/>
+          <FontAwesomeIcon icon={faInstagram} size='xl'/>
           </div>
           {/* Pass isBasketOpen state to Basket component */}
           {isBasketOpen && <Basket isBasketOpen={isBasketOpen} />}

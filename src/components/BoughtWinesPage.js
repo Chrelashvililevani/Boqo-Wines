@@ -69,7 +69,7 @@ const BoughtWinesPage = () => {
       <h2>შეძენილი ღვინოები</h2>
       <div className="bought-wines-list">
         {boughtWines.map(wine => (
-          <div key={wine.id} className="wine-item">
+          <div key={wine.id} className='bought-row'>
             <h3>{wine.title}</h3>
             <img src={wine.imageUrls[0]} className='image-bought' />
             <p>ჯამური ფასი: {wine.totalPrice} GEL</p>

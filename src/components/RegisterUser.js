@@ -187,7 +187,7 @@ const RegisterUser = ({ onClose }) => {
                         <label htmlFor="password">პაროლი:</label>
                         <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required/><br/>
                         <button type="submit">ავტორიზაცია</button>
-                        <p onClick={toggleForm} style={{ cursor: 'pointer' }}>არ გაქვს ექაუნთი?</p>
+                        <p onClick={toggleForm} style={{ cursor: 'pointer'}}>არ გაქვს ექაუნთი?</p>
                     </form>
                 </div>
                 ) : (

@@ -1,76 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { firestore } from './firebase'; // Adjust the path as necessary
 
 const WineSelector = () => {
-  // State variables to store user selections
   const [taste, setTaste] = useState('');
   const [wineType, setWineType] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: 20, max: 250 });
+  const [step, setStep] = useState(1);
   const [selectedWines, setSelectedWines] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
-  // Function to handle form submission
+  useEffect(() => {
+    const savedState = JSON.parse(localStorage.getItem('wineSelectorState'));
+    if (savedState) {
+      console.log('Loaded saved state:', savedState);
+      setTaste(savedState.taste);
+      setWineType(savedState.wineType);
+      setStep(savedState.step);
+      setSubmitted(savedState.submitted);
+    }
+  }, []);
+
+  useEffect(() => {
+    const stateToSave = { taste, wineType, step, submitted };
+    localStorage.setItem('wineSelectorState', JSON.stringify(stateToSave));
+    console.log('Saved state:', stateToSave);
+  }, [taste, wineType, step, submitted]);
+
+  useEffect(() => {
+    if (submitted) {
+      console.log('Fetching wines with params:', { taste, wineType });
+      fetchWines(taste, wineType).then((wines) => {
+        console.log('Fetched wines:', wines);
+        setSelectedWines(wines);
+      });
+    }
+  }, [submitted, taste, wineType]);
+
+  const fetchWines = async (taste, wineType) => {
+    try {
+      const winesCollection = collection(firestore, 'Wines');
+      const q = query(
+        winesCollection,
+        where('Taste', '==', taste),
+        where('Category', '==', wineType),
+      );
+      const winesSnapshot = await getDocs(q);
+      const winesData = winesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  
+      console.log('Fetched Wines:', winesData);
+  
+      return winesData;
+    } catch (error) {
+      console.error('Error fetching wines:', error);
+      return [];
+    }
+  };
+  
+  useEffect(() => {
+      fetchWines(taste, wineType).then((wines) => {
+        console.log('Selected Wines:', wines);
+        setSelectedWines(wines);
+      });
+
+  }, [taste, wineType]);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to fetch wines based on user selections and update selectedWines state
-    // You can implement this logic using an API call or a local data source
-    // For demonstration purposes, let's assume we have a function fetchWines() that returns the list of wines
-    const wines = fetchWines(taste, wineType, priceRange);
-    setSelectedWines(wines);
+    if (step < 3) {
+      setStep((prevStep) => prevStep + 1);
+    } else {
+      setSubmitted(true);
+    }
   };
 
+  const handleReset = () => {
+    setTaste('');
+    setWineType('');
+    setStep(1);
+    setSubmitted(false);
+    setSelectedWines([]);
+  };
+
+
   return (
-    <div>
-      <h1>Find Your Wine</h1>
+    <div className='find-wine' style={{ paddingTop: '150px', textAlign: 'center', paddingBottom: '100px' }}>
+      <h1>მოძებნე შენი ღვინო</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Which taste do you prefer?</label>
-          <select value={taste} onChange={(e) => setTaste(e.target.value)}>
-            <option value="">Select Taste</option>
-            <option value="Dry">Dry</option>
-            <option value="Semi Sweet">Semi Sweet</option>
-            <option value="Sweet">Sweet</option>
-          </select>
-        </div>
-        <div>
-          <label>Which type of wine do you prefer?</label>
-          <select value={wineType} onChange={(e) => setWineType(e.target.value)}>
-            <option value="">Select Wine Type</option>
-            <option value="Red">Red</option>
-            <option value="White">White</option>
-          </select>
-        </div>
-        <div>
-          <label>Price Range (USD)</label>
-          <input
-            type="number"
-            value={priceRange.min}
-            onChange={(e) => setPriceRange({ ...priceRange, min: parseInt(e.target.value) })}
-            min="20"
-            max="250"
-            step="10"
-          />
-          -
-          <input
-            type="number"
-            value={priceRange.max}
-            onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) })}
-            min="20"
-            max="250"
-            step="10"
-          />
-        </div>
-        <button type="submit">Find Wines</button>
+        {step === 1 && (
+          <div>
+            <label>აარჩიე გემო?</label>
+            <select value={taste} onChange={(e) => setTaste(e.target.value)}>
+              <option value="">არჩევა</option>
+              <option value="Dry">მშრალი</option>
+              <option value="Semi Sweet">ნახევრად ტკბილი</option>
+              <option value="Sweet">ტკბილი</option>
+            </select>
+            <button type="submit">შემდეგი</button>
+          </div>
+        )}
+        {step === 2 && (
+          <div>
+            <label>აარჩიე კატეგორია?</label>
+            <select value={wineType} onChange={(e) => setWineType(e.target.value)}>
+              <option value="">არჩევა</option>
+              <option value="Red">წითელი</option>
+              <option value="White">თეთრი</option>
+            </select>
+            <button type="submit">შემდეგი</button>
+          </div>
+        )}
+        {step === 3 && (
+          <div>
+            <h2>არჩეული კატეგორიები</h2>
+            <p>გემო: {taste}</p>
+            <p>ღვინის კატეგორია: {wineType}</p>
+            {selectedWines.length > 0 ? (
+              <ul>
+                {selectedWines.map((wine) => (
+                  <li key={wine.id}>
+                    {wine.title} - {wine.Taste} - {wine.Category} - {wine.price} ლარი
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>არ მოიძებნა ღვინო</p>
+            )}
+            <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
+          </div>
+        )}
       </form>
-      <div>
-        <h2>Available Wines</h2>
-        <ul>
-          {selectedWines.map((wine, index) => (
-            <li key={index}>
-              {wine.name} - ${wine.price} - Bottles: {wine.quantity}
-              <button onClick={() => handleBuyClick(wine.id)}>Buy</button>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };
