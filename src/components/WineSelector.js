@@ -292,11 +292,11 @@ const WineSelector = () => {
             {user ? (
               <>
                 <button type="button" onClick={handlePurchase}>შეძენა</button>
-                <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
               </>
             ) : (
               <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვნიოების შეძენა.</p>
             )}
+            <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
           </div>
         )}
       </form>
