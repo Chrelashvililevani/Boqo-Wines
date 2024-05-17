@@ -31,7 +31,7 @@ const RegisterUser = ({ onClose }) => {
     };
 
     const handleClose = () => {
-        console.log("Close button clicked");
+
         onClose(); // Call onClose function
     };
 
@@ -93,8 +93,8 @@ const RegisterUser = ({ onClose }) => {
             await auth.setPersistence(browserLocalPersistence);
     
             // If authentication is successful, you can optionally perform further actions
-            console.log("User successfully authenticated");
-    
+
+            
             // Clear form data
             setFormData({
                 ...formData,
@@ -114,7 +114,7 @@ const RegisterUser = ({ onClose }) => {
         try {
             await signOut(auth);
             setUser(null); // Update user state to null
-            console.log('User logged out successfully');
+
         } catch (error) {
             console.error('Error logging out:', error);
         }

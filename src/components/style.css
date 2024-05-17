@@ -1193,7 +1193,7 @@ footer {
   align-items: center; /* Adjust vertical alignment */
   justify-content: center; /* Adjust horizontal alignment */
   font-weight: 400;
-  z-index: 10;
+  z-index: 999;
 }
 .reg-cont-div {
   display: flex;

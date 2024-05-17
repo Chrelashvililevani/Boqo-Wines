@@ -12,7 +12,7 @@ const WineSelector = () => {
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem('wineSelectorState'));
     if (savedState) {
-      console.log('Loaded saved state:', savedState);
+
       setTaste(savedState.taste);
       setWineType(savedState.wineType);
       setStep(savedState.step);
@@ -23,14 +23,14 @@ const WineSelector = () => {
   useEffect(() => {
     const stateToSave = { taste, wineType, step, submitted };
     localStorage.setItem('wineSelectorState', JSON.stringify(stateToSave));
-    console.log('Saved state:', stateToSave);
+
   }, [taste, wineType, step, submitted]);
 
   useEffect(() => {
     if (submitted) {
-      console.log('Fetching wines with params:', { taste, wineType });
+
       fetchWines(taste, wineType).then((wines) => {
-        console.log('Fetched wines:', wines);
+
         setSelectedWines(wines);
       });
     }
@@ -47,7 +47,6 @@ const WineSelector = () => {
       const winesSnapshot = await getDocs(q);
       const winesData = winesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   
-      console.log('Fetched Wines:', winesData);
   
       return winesData;
     } catch (error) {
@@ -58,7 +57,6 @@ const WineSelector = () => {
   
   useEffect(() => {
       fetchWines(taste, wineType).then((wines) => {
-        console.log('Selected Wines:', wines);
         setSelectedWines(wines);
       });
 
