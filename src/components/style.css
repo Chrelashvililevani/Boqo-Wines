@@ -1886,3 +1886,27 @@ footer {
 .find-wine button[type="reset"]:hover {
   background-color: #d32f2f;
 }
+.find-wine input[type='number']::-webkit-outer-spin-button,
+.find-wine input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.find-wine input[type='number'] {
+  text-align: center; /* Center the number inside the input */
+}
+
+.find-wine input[type='number']:focus {
+  outline: 2px solid #dadada; /* Change the color to your desired color */
+}
+
+.quantity-buy-now {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+}
+.buy-cont-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
