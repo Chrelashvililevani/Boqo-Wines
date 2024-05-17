@@ -295,7 +295,7 @@ const WineSelector = () => {
                 <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
               </>
             ) : (
-              <p>Please log in to buy selected wines.</p>
+              <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვნიოების შეძენა.</p>
             )}
           </div>
         )}
