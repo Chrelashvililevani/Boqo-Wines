@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "@firebase/firestore";
+import { getFirestore, enableIndexedDbPersistence } from "@firebase/firestore";
 import { getStorage } from "@firebase/storage";
 import { getAuth } from "firebase/auth"; // Import getAuth from the auth package
-
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -14,10 +13,28 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID_238476539827496583275,
   appId: process.env.REACT_APP_APP_ID_238476539827496583275,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID_238476539827496583275
-  };
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app); // Initialize auth object
+};
 
-export { firestore, storage, auth }; // Export firestore, storage, and auth
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Auth first
+const auth = getAuth(app);
+
+// Initialize Firestore
+const firestore = getFirestore(app);
+
+// Enable IndexedDB Persistence
+enableIndexedDbPersistence(firestore).catch((err) => {
+  if (err.code === 'failed-precondition') {
+    console.error('Failed to enable persistence: Multiple tabs open');
+  } else if (err.code === 'unimplemented') {
+    console.error('Failed to enable persistence: Browser does not support it');
+  }
+});
+
+// Initialize Storage
+const storage = getStorage(app);
+
+// Export firestore, storage, and auth
+export { firestore, storage, auth };
