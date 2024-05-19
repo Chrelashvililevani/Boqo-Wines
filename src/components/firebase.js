@@ -24,15 +24,6 @@ const auth = getAuth(app);
 // Initialize Firestore
 const firestore = getFirestore(app);
 
-// Enable IndexedDB Persistence
-enableIndexedDbPersistence(firestore).catch((err) => {
-  if (err.code === 'failed-precondition') {
-    console.error('Failed to enable persistence: Multiple tabs open');
-  } else if (err.code === 'unimplemented') {
-    console.error('Failed to enable persistence: Browser does not support it');
-  }
-});
-
 // Initialize Storage
 const storage = getStorage(app);
 
