@@ -1853,7 +1853,6 @@ footer {
   border: 1px solid #ccc;
   font-size: 1em;
 }
-
 .find-wine select {
   appearance: none;
   background: url('data:image/svg+xml;utf8,<svg fill="#333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
@@ -1901,7 +1900,27 @@ footer {
 .find-wine input[type='number']:focus {
   outline: 2px solid #dadada; /* Change the color to your desired color */
 }
-
+.gift input[type='text']::-webkit-outer-spin-button,
+.gift input[type='text']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.gift input[type='text']:focus {
+  outline: 2px solid #dadada; /* Change the color to your desired color */
+}
+.gift input[type='text'] {
+  padding: 10px;
+  outline: none;
+  border: 2px solid #dadada ;
+  width: 78%;
+}
+.gift {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 .quantity-buy-now {
   display: flex;
   flex-direction: row;
