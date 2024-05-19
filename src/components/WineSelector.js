@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { collection, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth'; // Import the authentication state listener
-import { firestore, auth } from './firebase'; // Adjust the path as necessary
+import { onAuthStateChanged } from 'firebase/auth';
+import { firestore, auth } from './firebase';
+import { Link } from 'react-router-dom';
+
+
+
 
 const WineSelector = () => {
-  const [user, setUser] = useState(null); // State to store the logged-in user
+  const [user, setUser] = useState(null);
   const [taste, setTaste] = useState('');
   const [wineType, setWineType] = useState('');
   const [step, setStep] = useState(1);
@@ -13,8 +17,10 @@ const WineSelector = () => {
   const [submitted, setSubmitted] = useState(false);
   const [buyStep, setBuyStep] = useState(false);
   const [wineQuantities, setWineQuantities] = useState({});
+  const [purchaseSuccess, setPurchaseSuccess] = useState('');
 
-  // Listen for changes in the authentication state
+  const popupRef = useRef(null);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -25,6 +31,12 @@ const WineSelector = () => {
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem('wineSelectorState'));
     const savedSelectedWines = JSON.parse(localStorage.getItem('selectedWines'));
+    const savedWineQuantities = JSON.parse(localStorage.getItem('wineQuantities'));
+
+    if (savedWineQuantities) {
+      setWineQuantities(savedWineQuantities);
+    }
+
 
     if (savedSelectedWines) {
       setSelectedWines(savedSelectedWines);
@@ -42,7 +54,10 @@ const WineSelector = () => {
   useEffect(() => {
     const stateToSave = { taste, wineType, step, submitted, buyStep };
     localStorage.setItem('wineSelectorState', JSON.stringify(stateToSave));
-  }, [taste, wineType, step, submitted, buyStep]);
+    localStorage.setItem('wineQuantities', JSON.stringify(wineQuantities));
+    localStorage.setItem('selectedWines', JSON.stringify(selectedWines));
+
+  }, [taste, wineType, step, submitted, buyStep, wineQuantities, selectedWines]);
 
   useEffect(() => {
     if (submitted) {
@@ -84,6 +99,14 @@ const WineSelector = () => {
     }
   };
 
+  const handleBack = () => {
+    if (buyStep) {
+      setBuyStep(false);
+    } else if (step > 1) {
+      setStep((prevStep) => prevStep - 1);
+    }
+  };
+
   const handleReset = () => {
     setTaste('');
     setWineType('');
@@ -93,7 +116,6 @@ const WineSelector = () => {
     setSelectedWines([]);
     setBuyStep(false);
     setWineQuantities({});
-    setSelectedWines([])
   };
 
   const handleCheckboxChange = (wineId) => {
@@ -105,16 +127,12 @@ const WineSelector = () => {
         ...prevQuantities,
         [wineId]: prevQuantities[wineId] || 1,
       }));
-      // Save selected wines to local storage
       localStorage.setItem('selectedWines', JSON.stringify(updatedSelectedWines));
-      // Update progress based on the number of selected wines
       const progress = updatedSelectedWines.length > 0 ? 3 : step;
-      setStep(progress); // Update the progress
+      setStep(progress);
       return updatedSelectedWines;
     });
   };
-
-  
 
   const handleQuantityChange = (wineId, quantity) => {
     setWineQuantities((prevQuantities) => ({
@@ -170,10 +188,9 @@ const WineSelector = () => {
       alert('Please log in to buy selected wines.');
       return;
     }
-    
 
     try {
-      const userId = user.uid; // Use the logged-in user's ID
+      const userId = user.uid;
       const winesSoldCollection = collection(firestore, 'wines-sold');
 
       await Promise.all(
@@ -186,28 +203,41 @@ const WineSelector = () => {
             timeBought: serverTimestamp(),
             updatedAt: serverTimestamp(),
             status: 'sold',
-            additionalPrice: '0'
+            additionalPrice: '0',
           });
         })
       );
 
-      // Reset after purchase
       handleReset();
-      alert('Purchase successful!');
+      setPurchaseSuccess('თქვენ წარმატებით შეიძინეთ ღვინო!');
     } catch (error) {
       console.error('Error purchasing wines:', error);
       alert('Purchase failed. Please try again.');
     }
   };
 
-  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setPurchaseSuccess('');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [popupRef]);
+
+
 
   return (
     <>
       <div className='wines-header-select'></div>
       <div className='find-wine' style={{ paddingTop: '0px', textAlign: 'center', paddingBottom: '100px' }}>
         <h1>მოძებნე შენი ღვინო</h1>
-        <form onSubmit={handleSubmit}>
+        <button type="button" onClick={handleBack} className="back-button">←</button>
+        <form onSubmit={handleSubmit} >
           {!buyStep && (
             <>
               {step === 1 && (
@@ -219,7 +249,7 @@ const WineSelector = () => {
                     <option value="Semi Sweet">ნახევრად ტკბილი</option>
                     <option value="Sweet">ტკბილი</option>
                   </select>
-                  <button type="submit">შემდეგი</button>
+                  <div><button type="submit">შემდეგი</button></div>
                 </div>
               )}
               {step === 2 && (
@@ -230,7 +260,9 @@ const WineSelector = () => {
                     <option value="Red">წითელი</option>
                     <option value="White">თეთრი</option>
                   </select>
-                  <button type="submit">შემდეგი</button>
+                  <div>
+                    <div><button type="submit">შემდეგი</button></div>
+                  </div>
                 </div>
               )}
               {step === 3 && (
@@ -254,13 +286,15 @@ const WineSelector = () => {
                   ) : (
                     <p>არ მოიძებნა ღვინო</p>
                   )}
-                  {selectedWines.length > 0 && (
-                    <div>
-                      <button type="button" onClick={handleBuyNow}>შეიძინე ახლავე</button>
-                      <button type="button">აჩუქე მეგობარს</button>
-                    </div>
-                  )}
-                  <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
+                  <div>
+                    {selectedWines.length > 0 && (
+                      <div className='buy-buy-buy'>
+                        <button type="button" onClick={handleBuyNow}>შეიძინე ახლავე</button>
+                        <button type="button">აჩუქე მეგობარს</button>
+                      </div>
+                    )}
+                    <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
+                  </div>
                 </div>
               )}
             </>
@@ -273,37 +307,50 @@ const WineSelector = () => {
                   .filter((wine) => selectedWines.includes(wine.id))
                   .map((wine) => (
                     <div key={wine.id} className='buy-cont-c'>
-                    <img src={wine.imageUrls[0]} alt={wine.title} style={{ height: '100px' }} />
-                    <p>{wine.title} - {translateTaste(wine.Taste)} - {translateCategory(wine.Category)} - {wine.price} ლარი</p>
-                    <p>რაოდენობა: </p>
-                    <div className='quantity-buy-now'>
-                      <button onClick={() => handleDecrement(wine.id)} style={{width: '50px'}}>-</button>
-                      <input
-                        type="number"
-                        value={wineQuantities[wine.id] || 1}
-                        onChange={(e) => handleQuantityChange(wine.id, parseInt(e.target.value))}
-                        className='input-changenubmer-checkout-m'
-                      />
-                      <button onClick={() => handleIncrement(wine.id)} style={{width: '50px'}}>+</button>
+                      <img src={wine.imageUrls[0]} alt={wine.title} style={{ height: '100px' }} />
+                      <p>{wine.title} - {translateTaste(wine.Taste)} - {translateCategory(wine.Category)} - {wine.price} ლარი</p>
+                      <p>რაოდენობა: </p>
+                      <div className='quantity-buy-now'>
+                        <button onClick={() => handleDecrement(wine.id)} style={{ width: '50px' }}>-</button>
+                        <input
+                          type="number"
+                          value={wineQuantities[wine.id] || 1}
+                          onChange={(e) => handleQuantityChange(wine.id, parseInt(e.target.value))}
+                          className='input-changenubmer-checkout-m'
+                        />
+                        <button onClick={() => handleIncrement(wine.id)} style={{ width: '50px' }}>+</button>
+                      </div>
                     </div>
+                  ))}
+              </ul>
+              {user ? (
+                <>
+                  <div>
+                    <button type="button" onClick={handlePurchase}>შეძენა</button>
                   </div>
-                ))}
-            </ul>
-            {user ? (
-              <>
-                <button type="button" onClick={handlePurchase}>შეძენა</button>
-              </>
-            ) : (
-              <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვნიოების შეძენა.</p>
-            )}
-            <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
+                </>
+              ) : (
+                <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვნიოების შეძენა.</p>
+              )}
+              <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
+            </div>
+          )}
+        </form>
+      </div>
+      {purchaseSuccess && (
+        <div className='items-are-bought'>
+          <div className='bought-pop-up' ref={popupRef}>
+            <p>{purchaseSuccess}</p>
+            <span role="img" aria-label="check mark">✅</span>
+            <Link to="/my-wines" className="my-wines-link-m">
+              <p>შეძენილი ღვინოების ნახვა</p>
+            </Link>
           </div>
-        )}
-      </form>
-    </div>
-  </>
-);
+          <button className="close-button-buy" onClick={() => setPurchaseSuccess('')}>X</button>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default WineSelector;
-

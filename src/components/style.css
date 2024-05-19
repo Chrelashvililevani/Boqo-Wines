@@ -1831,7 +1831,6 @@ footer {
 .find-wine form {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
   width: 90%;
 }
 
@@ -1840,6 +1839,10 @@ footer {
   font-size: 1.2em;
   margin-bottom: 10px;
   color: #6b3e26;
+}
+.find-win div {
+  display: flex;
+  flex-direction: column;
 }
 
 .find-wine select, .find-wine input[type="number"], .find-wine button {
@@ -1903,6 +1906,13 @@ footer {
   display: flex;
   flex-direction: row;
   width: 200px;
+  justify-content: center;
+}
+.buy-buy-buy {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .buy-cont-c {
   display: flex;
@@ -1910,3 +1920,24 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
+.find-wine .back-button {
+  background-color: transparent;
+  border: none;
+  font-size: 36px;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+  right: 0px;
+  width: 100px;
+  color: black;
+  padding: 0px;
+  transition: scale;
+  transition: transform 0.2s;
+}
+.find-wine .back-button:hover {
+  color: rgb(180, 87, 87);
+  background-color: transparent;
+  transform: scale(1.2);
+}
+
