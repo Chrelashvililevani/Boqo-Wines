@@ -16,7 +16,8 @@ const WineSelector = () => {
   const [giftStep, setGiftStep] = useState(false);
   const [wineQuantities, setWineQuantities] = useState({});
   const [purchaseSuccess, setPurchaseSuccess] = useState('');
-  const [giftDetails, setGiftDetails] = useState({ fullName: '', address: '' });
+  const [giftDetails, setGiftDetails] = useState({ fullName: '', address: '', mobileNumber: '' });
+  const [errors, setErrors] = useState({});
 
   const popupRef = useRef(null);
 
@@ -47,7 +48,7 @@ const WineSelector = () => {
       setSubmitted(savedState.submitted);
       setBuyStep(savedState.buyStep);
       setGiftStep(savedState.giftStep);
-      setGiftDetails(savedState.giftDetails || { fullName: '', address: '' });
+      setGiftDetails(savedState.giftDetails || { fullName: '', address: '', mobileNumber: '' });
     }
   }, []);
 
@@ -91,7 +92,39 @@ const WineSelector = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (step < 3) {
+    let newErrors = {};
+
+    if (step === 1 && !taste) {
+      newErrors.taste = true;
+    }
+
+    if (step === 2 && !wineType) {
+      newErrors.wineType = true;
+    }
+
+    if (step === 3 && selectedWines.length === 0) {
+      newErrors.selectedWines = true;
+    }
+
+    if (giftStep && step === 4 && !giftDetails.fullName) {
+      newErrors.fullName = true;
+    }
+
+    if (giftStep && step === 5 && !giftDetails.address) {
+      newErrors.address = true;
+    }
+
+    if (giftStep && step === 6 && !giftDetails.mobileNumber) {
+      newErrors.mobileNumber = true;
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
+    if (step < 3 || (giftStep && step < 7)) {
       setStep((prevStep) => prevStep + 1);
     } else {
       setSubmitted(true);
@@ -100,7 +133,7 @@ const WineSelector = () => {
 
   const handleBack = () => {
     if (buyStep) {
-      if (step === 6) {
+      if (step === 7) {
         setBuyStep(false);
         setStep(3);
       }
@@ -128,7 +161,8 @@ const WineSelector = () => {
     setBuyStep(false);
     setGiftStep(false);
     setWineQuantities({});
-    setGiftDetails({ fullName: '', address: '' });
+    setGiftDetails({ fullName: '', address: '', mobileNumber: '' });
+    setErrors({});
   };
 
   const handleCheckboxChange = (wineId) => {
@@ -194,7 +228,7 @@ const WineSelector = () => {
 
   const handleBuyNow = () => {
     setBuyStep(true);
-    setStep(6); // Directly go to step 6
+    setStep(7); // Directly go to step 7
   };
 
   const handleGift = () => {
@@ -211,50 +245,45 @@ const WineSelector = () => {
 
   const handlePurchase = async () => {
     if (!user) {
-      alert('Please log in to buy selected wines.');
+      setErrors({ auth: true });
       return;
     }
 
     try {
       const userId = user.uid;
-      const winesSoldCollection = collection(firestore, 'wines-sold');
+      const winesSoldCollection = collection(firestore, 'WinesSold');
+      const wines = selectedWines.map((wineId) => ({
+        wineId,
+        quantity: wineQuantities[wineId] || 1,
+      }));
 
-      await Promise.all(
-        selectedWines.map(async (wineId) => {
-          const quantity = wineQuantities[wineId] || 1;
-          await addDoc(winesSoldCollection, {
-            userId,
-            wineId,
-            quantity,
-            timeBought: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            status: 'sold',
-            additionalPrice: '0',
-            ...(giftStep ? { recipientName: giftDetails.fullName, recipientAddress: giftDetails.address } : {}),
-          });
-        })
-      );
+      await addDoc(winesSoldCollection, {
+        userId,
+        wines,
+        createdAt: serverTimestamp(),
+      });
 
+      setPurchaseSuccess('Purchase successful! Thank you for your purchase.');
       handleReset();
-      setPurchaseSuccess('თქვენ წარმატებით შეიძინეთ ღვინო!');
     } catch (error) {
-      console.error('Error purchasing wines:', error);
-      alert('Purchase failed. Please try again.');
+      console.error('Error processing purchase:', error);
+      setPurchaseSuccess('An error occurred during purchase. Please try again.');
+    }
+  };
+
+  const handleOutsideClick = (event) => {
+    if (popupRef.current && !popupRef.current.contains(event.target)) {
+      setPurchaseSuccess('');
     }
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setPurchaseSuccess('');
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleOutsideClick);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, [popupRef]);
+  }, []);
+
 
   return (
     <>
@@ -268,7 +297,11 @@ const WineSelector = () => {
               {step === 1 && (
                 <div>
                   <label>აარჩიე გემო?</label>
-                  <select value={taste} onChange={(e) => setTaste(e.target.value)}>
+                  <select
+                    value={taste}
+                    onChange={(e) => setTaste(e.target.value)}
+                    className={errors.taste ? 'error' : ''}
+                  >
                     <option value="">არჩევა</option>
                     <option value="Dry">მშრალი</option>
                     <option value="Semi Sweet">ნახევრად ტკბილი</option>
@@ -280,7 +313,11 @@ const WineSelector = () => {
               {step === 2 && (
                 <div>
                   <label>აარჩიე კატეგორია?</label>
-                  <select value={wineType} onChange={(e) => setWineType(e.target.value)}>
+                  <select
+                    value={wineType}
+                    onChange={(e) => setWineType(e.target.value)}
+                    className={errors.wineType ? 'error' : ''}
+                  >
                     <option value="">არჩევა</option>
                     <option value="Red">წითელი</option>
                     <option value="White">თეთრი</option>
@@ -303,6 +340,7 @@ const WineSelector = () => {
                             type="checkbox"
                             checked={selectedWines.includes(wine.id)}
                             onChange={() => handleCheckboxChange(wine.id)}
+                            className={errors.selectedWines ? 'error' : ''}
                           />
                           {wine.title} - {translateTaste(wine.Taste)} - {translateCategory(wine.Category)} - {wine.price} ლარი
                         </li>
@@ -331,10 +369,12 @@ const WineSelector = () => {
                   <label>მიმღების სრული სახელი:</label>
                   <input
                     type="text"
+                    id="fullName"
                     value={giftDetails.fullName}
                     onChange={(e) => handleGiftDetailsChange('fullName', e.target.value)}
+                    className={errors.fullName ? 'error' : ''}
                   />
-                  <button type="button" onClick={() => setStep(5)}>შემდეგი</button>
+                  <button type="button" onClick={handleSubmit}>შემდეგი</button>
                 </div>
               )}
               {giftStep && step === 5 && (
@@ -344,11 +384,24 @@ const WineSelector = () => {
                     type="text"
                     value={giftDetails.address}
                     onChange={(e) => handleGiftDetailsChange('address', e.target.value)}
+                    className={errors.address ? 'error' : ''}
                   />
-                  <button type="button" onClick={() => setStep(6)}>შემდეგი</button>
+                  <button type="button" onClick={handleSubmit}>შემდეგი</button>
                 </div>
               )}
-              {step === 6 && (
+              {giftStep && step === 6 && (
+                <div className='gift'>
+                  <label>მობილურის ნომერი:</label>
+                  <input
+                    type="number"
+                    value={giftDetails.mobileNumber}
+                    onChange={(e) => handleGiftDetailsChange('mobileNumber', e.target.value)}
+                    className={errors.mobileNumber ? 'error' : ''}
+                  />
+                  <button type="button" onClick={handleSubmit}>შემდეგი</button>
+                </div>
+              )}
+              {step === 7 && (
                 <div>
                   <h2>შეიძინეთ ღვინო</h2>
                   <ul>
@@ -379,7 +432,7 @@ const WineSelector = () => {
                       </div>
                     </>
                   ) : (
-                    <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვნიოების შეძენა.</p>
+                    <p>გთხოვთ გაიაროთ ავტორიზაცია, რომ შეძლოთ არჩეული ღვინოების შეძენა.</p>
                   )}
                   <button type="button" onClick={handleReset}>დაიწყე თავიდან</button>
                 </div>

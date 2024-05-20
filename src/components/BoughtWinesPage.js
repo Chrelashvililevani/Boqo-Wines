@@ -34,6 +34,7 @@ const BoughtWinesPage = () => {
             const wineAging = wineSoldData.WineAging || 0;
             const recipientName = wineSoldData.recipientName || '';
             const recipientAddress = wineSoldData.recipientAddress || '';
+            const mobileNumber = wineSoldData.mobileNumber || '';
             const wineDocRef = doc(firestore, 'Wines', wineId);
             const wineDocSnap = await getDoc(wineDocRef);
             if (wineDocSnap.exists()) {
@@ -51,6 +52,7 @@ const BoughtWinesPage = () => {
                 wineAging: wineAging,
                 recipientName: recipientName,
                 recipientAddress: recipientAddress,
+                mobileNumber: mobileNumber,
               };
             } else {
               console.error('Wine document not found for ID:', wineId);
@@ -85,6 +87,7 @@ const BoughtWinesPage = () => {
               {wine.wineAging > 0 && <p>დაძველება: {wine.wineAging} წლით</p>}
               {wine.recipientName && <p>მიმღები: {wine.recipientName}</p>}
               {wine.recipientAddress && <p>მისამართი: {wine.recipientAddress}</p>}
+              {wine.mobileNumber && <p>მობილურის ნომერი: {wine.mobileNumber}</p>}
             </div>
           ))}
         </div>
