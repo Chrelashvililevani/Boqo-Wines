@@ -1439,6 +1439,17 @@ footer {
   text-align: center;
 }
 
+.wine-item {
+  background-color: white;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
 .wine-item:hover {
   transform: translateY(-5px);
 }
