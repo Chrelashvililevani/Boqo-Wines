@@ -916,6 +916,10 @@ footer {
     color: white;
     padding: 25px;
     height: 350px;
+    transition: transform 0.3s ease;
+  }
+  .news-item:hover {
+    transform: translateY(-5px);
   }
   .news-text {
     font-style: italic; /* Italicize the title */
