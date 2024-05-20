@@ -31,7 +31,7 @@ function WinesPage() {
                     <div key={index} className="wine-item">
                         <Link to={`/Wines/${wine.id}`} className="wines-list-link"> {/* Pass wine.id as URL parameter */}
                             <div className="wine-details">
-                                <h2>{wine.title}</h2>
+                                <h1>{wine.title}</h1>
                                 {/* Add more wine details as needed */}
                             </div>
                             <div className="wine-image">
