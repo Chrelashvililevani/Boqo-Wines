@@ -919,6 +919,8 @@ footer {
   }
   .news-text {
     font-style: italic; /* Italicize the title */
+    color: rgb(255, 255, 255);
+    font-weight: 700;
   }
 
 .view-news-container {
