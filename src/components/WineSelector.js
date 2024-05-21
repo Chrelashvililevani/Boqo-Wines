@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { collection, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, query, where, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firestore, auth } from './firebase';
 import { Link } from 'react-router-dom';
@@ -289,30 +289,40 @@ const WineSelector = () => {
   };
 
   const handlePurchase = async () => {
-    if (!user) {
-      setErrors({ auth: true });
-      return;
-    }
-
     try {
-      const userId = user.uid;
-      const winesSoldCollection = collection(firestore, 'wines-sold');
-      const wines = selectedWines.map((wineId) => ({
-        wineId,
-        quantity: wineQuantities[wineId] || 1,
-      }));
-
-      await addDoc(winesSoldCollection, {
-        userId,
-        wines,
-        createdAt: serverTimestamp(),
-      });
-
-      setPurchaseSuccess('Purchase successful! Thank you for your purchase.');
-      handleReset();
+      // Check if the user is logged in
+      if (!user) {
+        console.log('You need to log in to add items to your cart.');
+        // Optionally, you can display a message or redirect the user to the login page
+        return;
+      }
+  
+      const userId = user.uid; // Get the user ID
+  
+      // Iterate over selected wines and their quantities
+      for (const wineId of selectedWines) {
+        const quantity = wineQuantities[wineId] || 1;
+  
+        const newItemRef = doc(collection(firestore, 'wines-sold'));
+        const newItemData = {
+          userId: userId,
+          wineId: wineId,
+          quantity: quantity,
+          timeBought: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          createdAt: serverTimestamp(),
+          status: "sold",
+          additionalPrice: '0',
+          fullName: giftDetails.fullName || '', // Default to empty string if not available
+          address: giftDetails.address || '', // Default to empty string if not available
+          mobileNumber: giftDetails.mobileNumber || '', // Default to empty string if not available
+        };
+        await setDoc(newItemRef, newItemData);
+      }
+      console.log('Wines purchased successfully!');
+      setPurchaseSuccess('Your purchase was successful!'); // Set success message
     } catch (error) {
-      console.error('Error processing purchase:', error);
-      setPurchaseSuccess('An error occurred during purchase. Please try again.');
+      console.error('Error purchasing wines:', error);
     }
   };
 

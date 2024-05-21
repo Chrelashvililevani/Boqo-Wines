@@ -32,8 +32,8 @@ const BoughtWinesPage = () => {
             const quantity = wineSoldData.quantity;
             const additionalPrice = wineSoldData.additionalPrice || 0;
             const wineAging = wineSoldData.WineAging || 0;
-            const recipientName = wineSoldData.recipientName || '';
-            const recipientAddress = wineSoldData.recipientAddress || '';
+            const fullName = wineSoldData.fullName || '';
+            const address = wineSoldData.address || '';
             const mobileNumber = wineSoldData.mobileNumber || '';
             const wineDocRef = doc(firestore, 'Wines', wineId);
             const wineDocSnap = await getDoc(wineDocRef);
@@ -50,8 +50,8 @@ const BoughtWinesPage = () => {
                 additionalPrice: additionalPrice,
                 totalPrice: (parseFloat(price) + parseFloat(additionalPrice)) * quantity,
                 wineAging: wineAging,
-                recipientName: recipientName,
-                recipientAddress: recipientAddress,
+                fullName: fullName,
+                address: address,
                 mobileNumber: mobileNumber,
               };
             } else {
@@ -85,8 +85,8 @@ const BoughtWinesPage = () => {
               <p>ჯამური ფასი: {wine.totalPrice} GEL</p>
               <p>რაოდენობა: {wine.quantity}</p>
               {wine.wineAging > 0 && <p>დაძველება: {wine.wineAging} წლით</p>}
-              {wine.recipientName && <p>მიმღები: {wine.recipientName}</p>}
-              {wine.recipientAddress && <p>მისამართი: {wine.recipientAddress}</p>}
+              {wine.fullName && <p>მიმღები: {wine.fullName}</p>}
+              {wine.address && <p>მისამართი: {wine.address}</p>}
               {wine.mobileNumber && <p>მობილურის ნომერი: {wine.mobileNumber}</p>}
             </div>
           ))}
