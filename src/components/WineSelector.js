@@ -296,7 +296,7 @@ const WineSelector = () => {
 
     try {
       const userId = user.uid;
-      const winesSoldCollection = collection(firestore, 'WinesSold');
+      const winesSoldCollection = collection(firestore, 'wines-sold');
       const wines = selectedWines.map((wineId) => ({
         wineId,
         quantity: wineQuantities[wineId] || 1,
