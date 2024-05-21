@@ -18,8 +18,53 @@ const WineSelector = () => {
   const [purchaseSuccess, setPurchaseSuccess] = useState('');
   const [giftDetails, setGiftDetails] = useState({ fullName: '', address: '', mobileNumber: '' });
   const [errors, setErrors] = useState({});
+  const [contextMenu, setContextMenu] = useState({ visible: false, position: { x: 0, y: 0 }, wineId: null });
 
   const popupRef = useRef(null);
+
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+    setContextMenu({
+      visible: true,
+      position: { x: event.pageX, y: event.pageY },
+    });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        handleCloseContextMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [popupRef]);
+
+  const ContextMenu = ({ position, onClose}) => {
+    const { x, y } = position;
+  
+    return (
+      <>
+      <div className="context-menu" style={{ top: y, left: x }}>
+        <ul>
+          <li onClick={handleSubmit}>შემდეგი</li>
+          <li onClick={handleBack}>უკან</li>
+          <li onClick={handleReset}>თავიდან</li>
+        </ul>
+      </div>
+      <div onClick={onClose} className="context-menu-backdrop"></div>
+      </>
+    );
+  };
+
+  const handleCloseContextMenu = () => {
+    setContextMenu({ ...contextMenu, visible: false });
+  };
+
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -284,11 +329,11 @@ const WineSelector = () => {
     };
   }, []);
 
-
+  
   return (
     <>
       <div className='wines-header-select'></div>
-      <div className='find-wine' style={{ paddingTop: '0px', textAlign: 'center', paddingBottom: '100px' }}>
+      <div className='find-wine' style={{ paddingTop: '0px', textAlign: 'center', paddingBottom: '100px' }} onContextMenu={(e) => handleContextMenu(e, null)}>
         <h1>მოძებნე შენი ღვინო</h1>
         <button type="button" onClick={handleBack} className="back-button">←</button>
         <form onSubmit={handleSubmit}>
@@ -440,6 +485,15 @@ const WineSelector = () => {
             </div>
           )}
         </form>
+        {contextMenu.visible && (
+          <ContextMenu
+            position={contextMenu.position}
+            wineId={contextMenu.wineId}
+            onClose={handleCloseContextMenu}
+            onPurchase={handlePurchase}
+            onGiftSubmit={handleSubmit}
+          />
+        )}
       </div>
       {purchaseSuccess && (
         <div className='items-are-bought'>
@@ -457,4 +511,4 @@ const WineSelector = () => {
   );
 };
 
-export default WineSelector;
+  export default WineSelector;
