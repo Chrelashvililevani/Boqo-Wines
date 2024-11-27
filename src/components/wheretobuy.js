@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 const slides = [
     {
         imageUrl: '/images/8000vintages.jpg',
@@ -43,10 +44,16 @@ function Wheretobuy() {
             <div className='where-to-buy'>
                 <div style={{ position: 'relative', width: '100%', height: '40vw', minHeight: '300px' }}>
                     {slides.map((slide, index) => (
-                        <div key={index} className={`buy-box ${activeSlide === index ? 'active' : ''}`} style={{ background: `url('${slide.imageUrl}')`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', backgroundRepeat: 'no-repeat' }}>
-                            <p className='byu-box-1-text'>შეიძინეთ ღვინო</p>
-                            <p className='byu-box-1-text'>{slide.text}</p>
-                        </div>
+                        <div
+                            key={index}
+                            className={`buy-box ${activeSlide === index ? 'active' : ''}`}
+                            style={{
+                                backgroundImage: `url('${slide.imageUrl}')`, // No need for !important here
+                            }}
+                            >
+                            <p className="byu-box-1-text">შეიძინეთ ღვინო</p>
+                            <p className="byu-box-1-text">{slide.text}</p>
+                            </div>
                     ))}
                 </div>
             </div>
