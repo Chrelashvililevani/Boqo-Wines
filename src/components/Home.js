@@ -14,10 +14,6 @@ const Home = () => {
       <Header />
       <SuddenLogo />
       <Info />
-      <div className='find-your-wine'>
-        <Link to="/find-your-wine" style={{color: 'white', textAlign: 'center'}}>მოძებნე შენი ღვინო</Link>
-        <Link to="/find-your-wine"><FontAwesomeIcon icon={faSearch} style={{paddingTop: '5px', paddingLeft: '10px', color: 'white'}}/></Link>
-      </div>
       <WineSlider />
       <Wheretobuy />
     </>
